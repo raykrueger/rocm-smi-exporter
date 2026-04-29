@@ -62,7 +62,7 @@ No privileged mode required.
 
 ## Prerequisites
 
-1. A Linux server with an AMD iGPU/GPU present(support for Windows is in the works).
+1. A Linux server with an AMD iGPU/GPU present.
 2. ROCm installed. You can refer to the official docs maintained by AMD [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/quick-start.html#rocm-install-quick). 
 
 
