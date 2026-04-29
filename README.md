@@ -1,4 +1,4 @@
-![GitHub Release](https://img.shields.io/github/v/release/rudimk/rocm-smi-exporter)
+![GitHub Release](https://img.shields.io/github/v/release/raykrueger/rocm-smi-exporter)
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/raykrueger/rocm-smi-exporter/build.yml)
 
