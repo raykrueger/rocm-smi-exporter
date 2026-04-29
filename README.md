@@ -63,7 +63,8 @@ No privileged mode required.
 ## Prerequisites
 
 1. A Linux server with an AMD iGPU/GPU present.
-2. ROCm installed. You can refer to the official docs maintained by AMD [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/quick-start.html#rocm-install-quick). 
+2. ROCm installed. You can refer to the official docs maintained by AMD [here](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/install/quick-start.html#rocm-install-quick).
+3. For container use: Docker with AMD GPU support configured. See [Running ROCm Docker containers](https://rocm.docs.amd.com/projects/install-on-linux/en/latest/how-to/docker.html).
 
 
 
