@@ -13,19 +13,28 @@ Forked from [rudimk/rocm-smi-exporter](https://github.com/rudimk/rocm-smi-export
 - **Dockerfile** — run the exporter as a container based on `debian:trixie-slim` with AMD's ROCm apt repo. AMD GPU access via Docker's `driver=amd` device reservation; no privileged mode required.
 - **Device name fallback** — newer RDNA GPUs (e.g. Radeon AI PRO R9700) may return generic names inside containers. A hardcoded fallback table keyed by device ID fills in the correct name when `rocm-smi` can't resolve it.
 
-This exporter currently piggybacks on `rocm-smi` and exports the following metrics as Prometheus `Gauges` for AMD GPUs as well as iGPUs:
+This exporter piggybacks on `rocm-smi` and exports the following metrics as Prometheus `Gauges` for AMD GPUs:
 
-1. `rocm_smi_edge_temperature` - GPU edge temperature in degrees Celsius (`°C`).
-2. `rocm_smi_socket_power` - GPU socket power consumption in watts (`W`).
-3. `rocm_smi_gpu_usage` - GPU usage in percent (`%`).
-4. `rocm_smi_gpu_vram_allocation` - GPU VRAM allocation in percent (`%`).
+| Metric | Description | Unit |
+|--------|-------------|------|
+| `rocm_smi_edge_temperature` | GPU edge temperature | °C |
+| `rocm_smi_junction_temperature` | GPU junction/hotspot temperature | °C |
+| `rocm_smi_memory_temperature` | GPU memory temperature | °C |
+| `rocm_smi_socket_power` | GPU socket power consumption | W |
+| `rocm_smi_power_cap` | GPU maximum power cap | W |
+| `rocm_smi_gpu_usage` | GPU utilization | % |
+| `rocm_smi_gpu_vram_allocation` | VRAM allocation | % |
+| `rocm_smi_memory_activity` | Memory read/write bus activity | % |
+| `rocm_smi_fan_rpm` | Fan speed | RPM |
+| `rocm_smi_fan_speed` | Fan speed | % |
+| `rocm_smi_gfx_clock` | Shader (GFX) clock | MHz |
+| `rocm_smi_memory_clock` | Memory clock | MHz |
+| `rocm_smi_throttle_status` | Throttle status (0 = normal) | — |
 
-In addition, all gauges get the following labels:
-1. `device_id`
-2. `device_name`
-3. `subsystem_id`
-
-Support for more metrics (like fan speed) are coming soon.
+All gauges carry the following labels:
+- `device_id`
+- `device_name`
+- `subsystem_id`
 
 ## Docker
 
