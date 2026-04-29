@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.1] - 2026-04-29
+
+### Changed
+- Bump `prometheus_client` 0.20.0 → 0.25.0
+- Bump `pyinstaller` 6.10.0 → 6.20.0
+- Bump `pyinstaller-hooks-contrib` 2024.8 → 2026.4
+- Bump `packaging` 24.1 → 26.2
+- Bump `setuptools` 74.1.2 → 82.0.1
+- Bump `altgraph` 0.17.4 → 0.17.5
+
 ## [2.2.0] - 2026-04-29
 
 ### Added
