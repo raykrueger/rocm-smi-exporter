@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.2](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.1...v2.2.2) (2026-04-29)
+
+
+### Bug Fixes
+
+* trigger build and release on GitHub release event, update Grafana dashboard ([3b68d4f](https://github.com/raykrueger/rocm-smi-exporter/commit/3b68d4fce6313b630e6c016e197e25c45d5ea5e1))
+
 ## [2.2.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.0...v2.2.1) (2026-04-29)
 
 ### Chores
