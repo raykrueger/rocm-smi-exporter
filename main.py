@@ -22,6 +22,18 @@ REGISTRY.unregister(PLATFORM_COLLECTOR)
 # Unlike process and platform_collector gc_collector registers itself as a different collector that has no corresponding public named variable. 
 REGISTRY.unregister(REGISTRY._names_to_collectors['python_gc_objects_collected_total'])
 
+DEVICE_NAME_FALLBACKS = {
+    '0x7551': 'AMD Radeon AI PRO R9700',
+}
+
+GENERIC_NAMES = {'N/A', 'AMD Radeon Graphics'}
+
+def resolveDeviceName(card):
+    name = card.get('Device Name', 'N/A')
+    if name not in GENERIC_NAMES:
+        return name
+    return DEVICE_NAME_FALLBACKS.get(card.get('Device ID', '').lower(), name)
+
 '''
 Define gauges
 '''
@@ -53,15 +65,19 @@ if __name__ == '__main__':
         for card in list(metrics.keys()):
             # Since the driver version is also exported as a key called `system`, disregard that
             if card != "system":
-                gpuEdgeTemperature.labels(device_name=metrics[card]['Device Name'], device_id=metrics[card]['Device ID'], subsystem_id=metrics[card]['Subsystem ID']).set(metrics[card]['Temperature (Sensor edge) (C)'])
+                device_name = resolveDeviceName(metrics[card])
+                device_id = metrics[card]['Device ID']
+                subsystem_id = metrics[card]['Subsystem ID']
+                labels = {'device_name': device_name, 'device_id': device_id, 'subsystem_id': subsystem_id}
+                gpuEdgeTemperature.labels(**labels).set(metrics[card]['Temperature (Sensor edge) (C)'])
                 power = next((metrics[card][k] for k in [
                     'Current Socket Graphics Package Power (W)',
                     'Average Graphics Package Power (W)',
                     'average_socket_power (W)',
                 ] if k in metrics[card] and metrics[card][k] != 'N/A'), 0)
-                gpuSocketPower.labels(device_name=metrics[card]['Device Name'], device_id=metrics[card]['Device ID'], subsystem_id=metrics[card]['Subsystem ID']).set(power)
-                gpuUsage.labels(device_name=metrics[card]['Device Name'], device_id=metrics[card]['Device ID'], subsystem_id=metrics[card]['Subsystem ID']).set(metrics[card]['GPU use (%)'])
-                gpuVRAMUsage.labels(device_name=metrics[card]['Device Name'], device_id=metrics[card]['Device ID'], subsystem_id=metrics[card]['Subsystem ID']).set(metrics[card]['GPU Memory Allocated (VRAM%)'])
+                gpuSocketPower.labels(**labels).set(power)
+                gpuUsage.labels(**labels).set(metrics[card]['GPU use (%)'])
+                gpuVRAMUsage.labels(**labels).set(metrics[card]['GPU Memory Allocated (VRAM%)'])
         logger.info("[X] Refreshed GPU metrics.")
         time.sleep(10)
 
