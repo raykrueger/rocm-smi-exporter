@@ -7,7 +7,7 @@ A Prometheus exporter for rocm-smi
 
 ## This fork
 
-Forked from [rudimk/rocm-smi-exporter](https://github.com/rudimk/rocm-smi-exporter), which appears unmaintained as of late 2024. This fork adds:
+Forked from [rudimk/rocm-smi-exporter](https://github.com/rudimk/rocm-smi-exporter) — thanks to Rudi MK for the original work. The upstream project appears unmaintained as of late 2024. This fork adds:
 
 - **Power metric fix** — the original hardcodes `Current Socket Graphics Package Power (W)`, which is absent on RDNA GPUs (e.g. Radeon RX/Pro). This fork falls back to `Average Graphics Package Power (W)` and `average_socket_power (W)` before defaulting to 0. Backwards compatible with Instinct cards that expose the original field.
 - **Dockerfile** — run the exporter as a container using `rocm/rocm-terminal` as the base image. AMD GPU access via Docker's `driver=amd` device reservation; no privileged mode required.
