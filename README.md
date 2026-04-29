@@ -70,7 +70,7 @@ No privileged mode required.
 
 ## Running
 
-You can find the latest release at [https://github.com/rudimk/rocm-smi-exporter/releases](https://github.com/rudimk/rocm-smi-exporter/releases). Download the tarball, extract the exporter to `/usr/local/bin/` and you're good to go. To run the exporter as a `systemd` job, feel free to use the following template:
+You can find the latest release at [https://github.com/raykrueger/rocm-smi-exporter/releases](https://github.com/raykrueger/rocm-smi-exporter/releases). Download the tarball, extract the exporter to `/usr/local/bin/` and you're good to go. To run the exporter as a `systemd` job, feel free to use the following template:
 
 ```
 [Unit]
@@ -99,11 +99,11 @@ scrape_configs:
 ## Build instructions
 
 1. Clone this repo
-2. If you're using `pipenv`, run `pipenv install` inside this directory. If not, run `pip install -r requirements.txt`.
-3. To run the app: `pipenv run python main.py` or `python main.py`. 
-4. To compile the app into a binary: `pipenv run pyinstaller main.spec` or `pyinstaller main.spec`. 
+2. Install runtime dependencies: `pip install -r requirements.txt`
+3. Run: `python main.py`
+4. To compile a binary: `pip install -r requirements-build.txt && pyinstaller main.spec`
 
-The compiled binary can be found inside a newly-generated folder called `dist/` - you can move it to `/usr/local/bin`. 
+The compiled binary can be found in `dist/` — move it to `/usr/local/bin`.
 
 ## Grafana Dashboard
 
