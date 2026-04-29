@@ -26,6 +26,40 @@ In addition, all gauges get the following labels:
 
 Support for more metrics(like fan speed) are coming soon.
 
+## Docker
+
+### Build
+
+```sh
+docker build -t rocm-smi-exporter .
+```
+
+### Run
+
+```sh
+docker run -d --gpus driver=amd,count=all,capabilities=gpu -p 9393:9393 rocm-smi-exporter
+```
+
+### Docker Compose
+
+```yaml
+services:
+  rocm-smi-exporter:
+    image: rocm-smi-exporter
+    restart: unless-stopped
+    ports:
+      - "9393:9393"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: amd
+              count: all
+              capabilities: [gpu]
+```
+
+No privileged mode required.
+
 ## Prerequisites
 
 1. A Linux server with an AMD iGPU/GPU present(support for Windows is in the works).
