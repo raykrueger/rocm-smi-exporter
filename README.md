@@ -1,6 +1,6 @@
 ![GitHub Release](https://img.shields.io/github/v/release/rudimk/rocm-smi-exporter)
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/rudimk/rocm-smi-exporter/build.yml)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/raykrueger/rocm-smi-exporter/build.yml)
 
 # rocm-smi-exporter
 A Prometheus exporter for rocm-smi
