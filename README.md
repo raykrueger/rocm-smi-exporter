@@ -30,6 +30,8 @@ This exporter piggybacks on `rocm-smi` and exports the following metrics as Prom
 | `rocm_smi_gfx_clock` | Shader (GFX) clock | MHz |
 | `rocm_smi_memory_clock` | Memory clock | MHz |
 | `rocm_smi_throttle_status` | Throttle status (0 = normal) | — |
+| `rocm_smi_vram_used_bytes` | VRAM used | bytes |
+| `rocm_smi_vram_total_bytes` | VRAM total capacity | bytes |
 
 All gauges carry the following labels:
 - `device_id`

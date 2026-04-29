@@ -49,10 +49,16 @@ gpuFanSpeed           = Gauge('rocm_smi_fan_speed',              'GPU fan speed 
 gpuGfxClock           = Gauge('rocm_smi_gfx_clock',             'GPU shader clock (MHz)',                      LABELS)
 gpuMemClock           = Gauge('rocm_smi_memory_clock',           'GPU memory clock (MHz)',                      LABELS)
 gpuThrottleStatus     = Gauge('rocm_smi_throttle_status',        'GPU throttle status (0=normal, non-zero=throttled)', LABELS)
+gpuVRAMUsedBytes      = Gauge('rocm_smi_vram_used_bytes',         'GPU VRAM used (bytes)',                           LABELS)
+gpuVRAMTotalBytes     = Gauge('rocm_smi_vram_total_bytes',        'GPU VRAM total (bytes)',                          LABELS)
 
 
 def getGPUMetrics():
     metrics = json.loads(check_output(["rocm-smi", "-a", "--json"]))
+    vram = json.loads(check_output(["rocm-smi", "--showmeminfo", "vram", "--json"]))
+    for card in vram:
+        if card != "system" and card in metrics:
+            metrics[card].update(vram[card])
     logger.info("[X] Retrieved metrics from rocm-smi.")
     return metrics
 
@@ -97,6 +103,8 @@ if __name__ == '__main__':
             gpuMemClock.labels(**labels).set(floatOrZero(c.get('current_uclk (MHz)')))
 
             gpuThrottleStatus.labels(**labels).set(floatOrZero(c.get('throttle_status', 0)))
+            gpuVRAMUsedBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Used Memory (B)')))
+            gpuVRAMTotalBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Memory (B)')))
 
         logger.info("[X] Refreshed GPU metrics.")
         time.sleep(10)
