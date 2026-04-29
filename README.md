@@ -10,7 +10,8 @@ A Prometheus exporter for rocm-smi
 Forked from [rudimk/rocm-smi-exporter](https://github.com/rudimk/rocm-smi-exporter) — thanks to Rudi MK for the original work. The upstream project appears unmaintained as of late 2024. This fork adds:
 
 - **Power metric fix** — the original hardcodes `Current Socket Graphics Package Power (W)`, which is absent on RDNA GPUs (e.g. Radeon RX/Pro). This fork falls back to `Average Graphics Package Power (W)` and `average_socket_power (W)` before defaulting to 0. Backwards compatible with Instinct cards that expose the original field.
-- **Dockerfile** — run the exporter as a container using `rocm/rocm-terminal` as the base image. AMD GPU access via Docker's `driver=amd` device reservation; no privileged mode required.
+- **Dockerfile** — run the exporter as a container based on `debian:trixie-slim` with AMD's ROCm apt repo. AMD GPU access via Docker's `driver=amd` device reservation; no privileged mode required.
+- **Device name fallback** — newer RDNA GPUs (e.g. Radeon AI PRO R9700) may return generic names inside containers. A hardcoded fallback table keyed by device ID fills in the correct name when `rocm-smi` can't resolve it.
 
 This exporter currently piggybacks on `rocm-smi` and exports the following metrics as Prometheus `Gauges` for AMD GPUs as well as iGPUs:
 
@@ -24,7 +25,7 @@ In addition, all gauges get the following labels:
 2. `device_name`
 3. `subsystem_id`
 
-Support for more metrics(like fan speed) are coming soon.
+Support for more metrics (like fan speed) are coming soon.
 
 ## Docker
 
