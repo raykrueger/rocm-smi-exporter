@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.2](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.1...v2.2.2) (2026-05-10)
+
+
+### Bug Fixes
+
+* handle empty/invalid JSON from rocm-smi when GPU is in BACO state ([4c62932](https://github.com/raykrueger/rocm-smi-exporter/commit/4c62932f164c46a74b867d4624297b06f1cc1012))
+* handle empty/invalid JSON from rocm-smi when GPU is in BACO state ([fef220a](https://github.com/raykrueger/rocm-smi-exporter/commit/fef220a73b0413fe1e52ea27718d7df5bbe33e2f)), closes [#1](https://github.com/raykrueger/rocm-smi-exporter/issues/1)
+* trigger build and release on GitHub release event, update Grafana dashboard ([3b68d4f](https://github.com/raykrueger/rocm-smi-exporter/commit/3b68d4fce6313b630e6c016e197e25c45d5ea5e1))
+
 ## [2.2.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.0...v2.2.1) (2026-04-29)
 
 ### Chores
