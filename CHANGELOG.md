@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.2.2](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.1...v2.2.2) (2026-05-09)
+
+### Bug Fixes
+
+- Crash on empty JSON when GPU is in D3hot/BACO power state — `safeJsonOutput()` handles empty/malformed output from `rocm-smi` gracefully, logging a warning and continuing with stale/zero metrics instead of crashing
+
 ## [2.2.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.0...v2.2.1) (2026-04-29)
 
 ### Chores
