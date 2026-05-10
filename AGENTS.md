@@ -34,16 +34,12 @@ pyinstaller main.spec
 
 ## Releases
 
-Both CI workflows trigger on any tag push. Tag format is semver (`vX.Y.Z`):
-
-```sh
-git tag vX.Y.Z && git push origin vX.Y.Z
-```
+Releases are managed by [release-please](https://github.com/googleapis/release-please). Use conventional commits on `main` — release-please opens a PR that bumps the version and updates `CHANGELOG.md` automatically. Merging that PR creates a GitHub Release, which triggers both CI workflows.
 
 - `build.yml` — builds Docker image, pushes to GHCR (`ghcr.io/raykrueger/rocm-smi-exporter`)
-- `release.yml` — builds PyInstaller binary, creates GitHub Release with tarball
+- `release.yml` — builds PyInstaller binary, creates GitHub Release tarball
 
-Update `CHANGELOG.md` before tagging.
+Do not manually tag or edit `CHANGELOG.md`.
 
 ## Adding metrics
 
