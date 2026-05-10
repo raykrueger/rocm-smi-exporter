@@ -1,4 +1,4 @@
-from subprocess import check_output
+from subprocess import check_output, CalledProcessError
 import json
 import time
 import logging
@@ -53,12 +53,32 @@ gpuVRAMUsedBytes      = Gauge('rocm_smi_vram_used_bytes',         'GPU VRAM used
 gpuVRAMTotalBytes     = Gauge('rocm_smi_vram_total_bytes',        'GPU VRAM total (bytes)',                          LABELS)
 
 
+def safeJsonOutput(cmd):
+    """Run a command and parse JSON output, returning None on failure."""
+    try:
+        out = check_output(cmd)
+        if not out.strip():
+            return None
+        return json.loads(out)
+    except (json.JSONDecodeError, CalledProcessError) as e:
+        logger.warning(f"rocm-smi command failed: {cmd[1:]} — {e}")
+        return None
+
+
 def getGPUMetrics():
-    metrics = json.loads(check_output(["rocm-smi", "-a", "--json"]))
-    vram = json.loads(check_output(["rocm-smi", "--showmeminfo", "vram", "--json"]))
-    for card in vram:
-        if card != "system" and card in metrics:
-            metrics[card].update(vram[card])
+    metrics = safeJsonOutput(["rocm-smi", "-a", "--json"])
+    if metrics is None:
+        logger.warning("No metrics data from rocm-smi, returning empty.")
+        return {}
+
+    vram = safeJsonOutput(["rocm-smi", "--showmeminfo", "vram", "--json"])
+    if vram:
+        for card in vram:
+            if card != "system" and card in metrics:
+                metrics[card].update(vram[card])
+    else:
+        logger.warning("No VRAM data from rocm-smi, VRAM metrics will be stale/zero.")
+
     logger.info("[X] Retrieved metrics from rocm-smi.")
     return metrics
 
