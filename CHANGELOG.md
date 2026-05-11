@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.0...v2.4.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* use PAT in release-please to trigger downstream workflows ([ae1fc71](https://github.com/raykrueger/rocm-smi-exporter/commit/ae1fc718c8b715387d9659a1975a11962f6f0eab))
+
+
+### Documentation
+
+* fix README install instructions to use git clone ([374d664](https://github.com/raykrueger/rocm-smi-exporter/commit/374d664011f486c7bd4bf680406bd9b61682acf2))
+
 ## [2.4.0](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.3.1...v2.4.0) (2026-05-11)
 
 
