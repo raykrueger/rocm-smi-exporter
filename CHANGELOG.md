@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.2...v2.5.0) (2026-05-11)
+
+
+### Features
+
+* add tests, mock data support, and proper package structure ([e76556e](https://github.com/raykrueger/rocm-smi-exporter/commit/e76556e3b34d1fc849925db94c361dca6c94e48e))
+
 ## [2.4.2](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.1...v2.4.2) (2026-05-11)
 
 
