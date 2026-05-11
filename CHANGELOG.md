@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.3.1...v2.4.0) (2026-05-11)
+
+
+### Features
+
+* convert to pip-installable package with pyproject.toml ([8f0b35d](https://github.com/raykrueger/rocm-smi-exporter/commit/8f0b35d70b2b20f424e07ab398facc2d9c1b022d))
+
+
+### Bug Fixes
+
+* trigger build workflow on tag push instead of release event ([38dc5c2](https://github.com/raykrueger/rocm-smi-exporter/commit/38dc5c2bde5a8d814071bdd871eda4d898a64860))
+
 ## [2.3.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.3.0...v2.3.1) (2026-05-11)
 
 
