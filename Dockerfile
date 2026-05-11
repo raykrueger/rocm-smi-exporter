@@ -11,8 +11,18 @@ RUN apt-get update && apt-get install -y curl gnupg python3 python3-pip libdrm-a
 ENV PATH="/opt/rocm/bin:${PATH}"
 
 WORKDIR /app
-COPY pyproject.toml main.py .
+COPY pyproject.toml ./
+COPY rocm_smi_exporter/ ./rocm_smi_exporter/
 RUN pip3 install --no-cache-dir --break-system-packages .
 
 EXPOSE 9393
 CMD ["rocm-smi-exporter"]
+
+# Optional: activate mock rocm-smi for testing without GPU hardware.
+ARG USE_MOCK_DATA
+COPY tests/fixtures/rocm_smi_all.json tests/fixtures/rocm_smi_vram.json /mock-data/
+COPY tests/fixtures/rocm-smi /mock-rocm-smi
+RUN if [ -n "$USE_MOCK_DATA" ]; then \
+    cp /mock-rocm-smi /opt/rocm/bin/rocm-smi && \
+    chmod +x /opt/rocm/bin/rocm-smi; \
+    fi

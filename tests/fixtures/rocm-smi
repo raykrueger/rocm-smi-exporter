@@ -1,0 +1,13 @@
+#!/bin/sh
+# Fake rocm-smi for testing without GPU hardware.
+# Reads fixture JSON files from MOCK_DATA_DIR (default: /mock-data).
+
+MOCK_DATA_DIR="${MOCK_DATA_DIR:-/mock-data}"
+
+if echo "$@" | grep -q -- '-a.*--json\|--json.*-a'; then
+    cat "$MOCK_DATA_DIR/rocm_smi_all.json"
+elif echo "$@" | grep -q -- '--showmeminfo.*--json\|--json.*--showmeminfo'; then
+    cat "$MOCK_DATA_DIR/rocm_smi_vram.json"
+else
+    echo '{}'
+fi

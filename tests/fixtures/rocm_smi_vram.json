@@ -1,0 +1,11 @@
+{
+  "system": {},
+  "node[0]": {
+    "VRAM Total Used Memory (B)": "21216985088",
+    "VRAM Total Memory (B)": "34208743424"
+  },
+  "node[1]": {
+    "VRAM Total Used Memory (B)": "22884802560",
+    "VRAM Total Memory (B)": "34208743424"
+  }
+}

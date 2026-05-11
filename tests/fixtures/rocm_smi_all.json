@@ -1,0 +1,42 @@
+{
+  "system": {
+    "ROCm Version": "6.2",
+    "Driver Version": "5.15.0"
+  },
+  "node[0]": {
+    "Device Name": "AMD Radeon AI PRO R9700",
+    "Device ID": "0x7551",
+    "Subsystem ID": "-0x1b67",
+    "Temperature (Sensor edge) (C)": "33",
+    "Temperature (Sensor junction) (C)": "44",
+    "Temperature (Sensor memory) (C)": "35",
+    "Current Socket Graphics Package Power (W)": "276",
+    "Max Graphics Package Power (W)": "300",
+    "GPU use (%)": "100",
+    "GPU Memory Allocated (VRAM%)": "62",
+    "GPU Memory Read/Write Activity (%)": "4",
+    "Fan RPM": "893",
+    "Fan speed (%)": "21",
+    "current_gfxclk (MHz)": "2844",
+    "current_uclk (MHz)": "1258",
+    "throttle_status": "0"
+  },
+  "node[1]": {
+    "Device Name": "AMD Radeon AI PRO R9700",
+    "Device ID": "0x7551",
+    "Subsystem ID": "-0x67ff",
+    "Temperature (Sensor edge) (C)": "35",
+    "Temperature (Sensor junction) (C)": "49",
+    "Temperature (Sensor memory) (C)": "36",
+    "Current Socket Graphics Package Power (W)": "300",
+    "Max Graphics Package Power (W)": "300",
+    "GPU use (%)": "100",
+    "GPU Memory Allocated (VRAM%)": "66",
+    "GPU Memory Read/Write Activity (%)": "63",
+    "Fan RPM": "893",
+    "Fan speed (%)": "16",
+    "current_gfxclk (MHz)": "2769",
+    "current_uclk (MHz)": "1258",
+    "throttle_status": "16384"
+  }
+}

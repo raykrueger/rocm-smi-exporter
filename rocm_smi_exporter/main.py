@@ -1,5 +1,6 @@
 from subprocess import check_output, CalledProcessError
 import json
+import os
 import signal
 import threading
 import logging
@@ -84,6 +85,46 @@ def getGPUMetrics():
     return metrics
 
 
+def setMetrics(metrics):
+    """Extract rocm-smi metrics and set Prometheus gauges."""
+    for card in metrics:
+        if card == "system":
+            continue
+        c = metrics[card]
+        device_name = resolveDeviceName(c)
+        labels = {
+            'device_name': device_name,
+            'device_id': c['Device ID'],
+            'subsystem_id': c['Subsystem ID'],
+        }
+
+        gpuEdgeTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor edge) (C)')))
+        gpuJunctionTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor junction) (C)')))
+        gpuMemoryTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor memory) (C)')))
+
+        power = next((c[k] for k in [
+            'Current Socket Graphics Package Power (W)',
+            'Average Graphics Package Power (W)',
+            'average_socket_power (W)',
+        ] if k in c and c[k] != 'N/A'), 0)
+        gpuSocketPower.labels(**labels).set(floatOrZero(power))
+        gpuPowerCap.labels(**labels).set(floatOrZero(c.get('Max Graphics Package Power (W)')))
+
+        gpuUsage.labels(**labels).set(floatOrZero(c.get('GPU use (%)')))
+        gpuVRAMUsage.labels(**labels).set(floatOrZero(c.get('GPU Memory Allocated (VRAM%)')))
+        gpuMemBandwidth.labels(**labels).set(floatOrZero(c.get('GPU Memory Read/Write Activity (%)')))
+
+        gpuFanRPM.labels(**labels).set(floatOrZero(c.get('Fan RPM')))
+        gpuFanSpeed.labels(**labels).set(floatOrZero(c.get('Fan speed (%)')))
+
+        gpuGfxClock.labels(**labels).set(floatOrZero(c.get('current_gfxclk (MHz)')))
+        gpuMemClock.labels(**labels).set(floatOrZero(c.get('current_uclk (MHz)')))
+
+        gpuThrottleStatus.labels(**labels).set(floatOrZero(c.get('throttle_status', 0)))
+        gpuVRAMUsedBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Used Memory (B)')))
+        gpuVRAMTotalBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Memory (B)')))
+
+
 def main():
     shutdown = threading.Event()
     signal.signal(signal.SIGTERM, lambda s, f: shutdown.set())
@@ -94,43 +135,7 @@ def main():
 
     while not shutdown.is_set():
         metrics = getGPUMetrics()
-        for card in metrics:
-            if card == "system":
-                continue
-            c = metrics[card]
-            device_name = resolveDeviceName(c)
-            labels = {
-                'device_name': device_name,
-                'device_id': c['Device ID'],
-                'subsystem_id': c['Subsystem ID'],
-            }
-
-            gpuEdgeTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor edge) (C)')))
-            gpuJunctionTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor junction) (C)')))
-            gpuMemoryTemperature.labels(**labels).set(floatOrZero(c.get('Temperature (Sensor memory) (C)')))
-
-            power = next((c[k] for k in [
-                'Current Socket Graphics Package Power (W)',
-                'Average Graphics Package Power (W)',
-                'average_socket_power (W)',
-            ] if k in c and c[k] != 'N/A'), 0)
-            gpuSocketPower.labels(**labels).set(floatOrZero(power))
-            gpuPowerCap.labels(**labels).set(floatOrZero(c.get('Max Graphics Package Power (W)')))
-
-            gpuUsage.labels(**labels).set(floatOrZero(c.get('GPU use (%)')))
-            gpuVRAMUsage.labels(**labels).set(floatOrZero(c.get('GPU Memory Allocated (VRAM%)')))
-            gpuMemBandwidth.labels(**labels).set(floatOrZero(c.get('GPU Memory Read/Write Activity (%)')))
-
-            gpuFanRPM.labels(**labels).set(floatOrZero(c.get('Fan RPM')))
-            gpuFanSpeed.labels(**labels).set(floatOrZero(c.get('Fan speed (%)')))
-
-            gpuGfxClock.labels(**labels).set(floatOrZero(c.get('current_gfxclk (MHz)')))
-            gpuMemClock.labels(**labels).set(floatOrZero(c.get('current_uclk (MHz)')))
-
-            gpuThrottleStatus.labels(**labels).set(floatOrZero(c.get('throttle_status', 0)))
-            gpuVRAMUsedBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Used Memory (B)')))
-            gpuVRAMTotalBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Memory (B)')))
-
+        setMetrics(metrics)
         logger.info("[X] Refreshed GPU metrics.")
         shutdown.wait(10)
 

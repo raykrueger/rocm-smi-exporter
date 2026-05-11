@@ -14,7 +14,14 @@ dependencies = [
 ]
 
 [project.scripts]
-rocm-smi-exporter = "main:main"
+rocm-smi-exporter = "rocm_smi_exporter.main:main"
 
-[tool.setuptools]
-py-modules = ["main"]
+[tool.setuptools.packages.find]
+include = ["rocm_smi_exporter*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: integration tests requiring Docker (deselect with '-m \"not integration\"')",
+]
+addopts = "-m \"not integration\""

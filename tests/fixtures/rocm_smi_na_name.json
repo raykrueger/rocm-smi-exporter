@@ -1,0 +1,23 @@
+{
+  "system": {},
+  "node[0]": {
+    "Device Name": "N/A",
+    "Device ID": "0x7551",
+    "Subsystem ID": "-0x1b67",
+    "Temperature (Sensor edge) (C)": "30",
+    "Temperature (Sensor junction) (C)": "40",
+    "Temperature (Sensor memory) (C)": "32",
+    "Current Socket Graphics Package Power (W)": "100",
+    "Max Graphics Package Power (W)": "300",
+    "GPU use (%)": "50",
+    "GPU Memory Allocated (VRAM%)": "10",
+    "GPU Memory Read/Write Activity (%)": "5",
+    "Fan RPM": "500",
+    "Fan speed (%)": "10",
+    "current_gfxclk (MHz)": "500",
+    "current_uclk (MHz)": "400",
+    "throttle_status": "0",
+    "VRAM Total Used Memory (B)": "1000000000",
+    "VRAM Total Memory (B)": "34208743424"
+  }
+}

@@ -24,6 +24,11 @@ ssh <host> "docker build -t rocm-smi-exporter:test /tmp/rocm-smi-exporter/"
 ssh <host> "docker run --rm --gpus driver=amd,count=all,capabilities=gpu -p 9394:9393 rocm-smi-exporter:test"
 ssh <host> "curl -s http://localhost:9394/metrics | grep rocm_smi"
 ```
+### Git
+
+You MUST use git conventional commits.
+You MUST NOT git commit without asking.
+You MUST NOT git push without asking.
 
 ## Releases
 
