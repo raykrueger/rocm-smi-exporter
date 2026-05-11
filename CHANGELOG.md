@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.2](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.1...v2.4.2) (2026-05-11)
+
+
+### Bug Fixes
+
+* include main.py in Docker image build ([ad7af2a](https://github.com/raykrueger/rocm-smi-exporter/commit/ad7af2a620c492617f34241c4dec42865a8c68fe))
+
 ## [2.4.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.0...v2.4.1) (2026-05-11)
 
 
