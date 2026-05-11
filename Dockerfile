@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y curl gnupg python3 python3-pip libdrm-a
 ENV PATH="/opt/rocm/bin:${PATH}"
 
 WORKDIR /app
-COPY pyproject.toml .
+COPY pyproject.toml main.py .
 RUN pip3 install --no-cache-dir --break-system-packages .
 
 EXPOSE 9393
