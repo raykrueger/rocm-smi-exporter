@@ -82,7 +82,13 @@ No privileged mode required.
 
 ## Running
 
-You can find the latest release at [https://github.com/raykrueger/rocm-smi-exporter/releases](https://github.com/raykrueger/rocm-smi-exporter/releases). Download the tarball, extract the exporter to `/usr/local/bin/` and you're good to go. To run the exporter as a `systemd` job, feel free to use the following template:
+Install the exporter:
+
+```sh
+pip install rocm-smi-exporter
+```
+
+To run the exporter as a `systemd` job, feel free to use the following template:
 
 ```
 [Unit]
@@ -111,11 +117,8 @@ scrape_configs:
 ## Build instructions
 
 1. Clone this repo
-2. Install runtime dependencies: `pip install -r requirements.txt`
-3. Run: `python main.py`
-4. To compile a binary: `pip install -r requirements-build.txt && pyinstaller main.spec`
-
-The compiled binary can be found in `dist/` — move it to `/usr/local/bin`.
+2. Install: `pip install -e .`
+3. Run: `rocm-smi-exporter`
 
 ## Grafana Dashboard
 

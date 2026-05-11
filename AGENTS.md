@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Prometheus exporter for AMD GPUs via `rocm-smi`. Runs as a container or standalone binary. Exposes metrics on port `9393`.
+A Prometheus exporter for AMD GPUs via `rocm-smi`. Runs as a container. Exposes metrics on port `9393`.
 
 The entire exporter logic is in `main.py`. There are no tests.
 
@@ -12,8 +12,8 @@ The entire exporter logic is in `main.py`. There are no tests.
 
 **Local run** (requires ROCm on the host):
 ```sh
-pip install -r requirements.txt
-python main.py
+pip install -e .
+rocm-smi-exporter
 ```
 
 **Build and test via Docker** (preferred — no local ROCm needed):
@@ -25,19 +25,11 @@ ssh <host> "docker run --rm --gpus driver=amd,count=all,capabilities=gpu -p 9394
 ssh <host> "curl -s http://localhost:9394/metrics | grep rocm_smi"
 ```
 
-**Build standalone binary**:
-```sh
-pip install -r requirements-build.txt
-pyinstaller main.spec
-# Binary lands in dist/rocm-smi-exporter
-```
-
 ## Releases
 
-Releases are managed by [release-please](https://github.com/googleapis/release-please). Use conventional commits on `main` — release-please opens a PR that bumps the version and updates `CHANGELOG.md` automatically. Merging that PR creates a GitHub Release, which triggers both CI workflows.
+Releases are managed by [release-please](https://github.com/googleapis/release-please). Use conventional commits on `main` — release-please opens a PR that bumps the version and updates `CHANGELOG.md` automatically. Merging that PR creates a GitHub Release, which triggers the CI workflow.
 
 - `build.yml` — builds Docker image, pushes to GHCR (`ghcr.io/raykrueger/rocm-smi-exporter`)
-- `release.yml` — builds PyInstaller binary, creates GitHub Release tarball
 
 Do not manually tag or edit `CHANGELOG.md`.
 
