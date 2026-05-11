@@ -11,10 +11,8 @@ RUN apt-get update && apt-get install -y curl gnupg python3 python3-pip libdrm-a
 ENV PATH="/opt/rocm/bin:${PATH}"
 
 WORKDIR /app
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir --break-system-packages prometheus_client
-
-COPY main.py .
+COPY pyproject.toml .
+RUN pip3 install --no-cache-dir --break-system-packages .
 
 EXPOSE 9393
-CMD ["python3", "main.py"]
+CMD ["rocm-smi-exporter"]
