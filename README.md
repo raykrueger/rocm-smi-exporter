@@ -82,10 +82,12 @@ No privileged mode required.
 
 ## Running
 
-Install the exporter:
+Clone this repo and install the exporter:
 
 ```sh
-pip install rocm-smi-exporter
+git clone https://github.com/raykrueger/rocm-smi-exporter.git
+cd rocm-smi-exporter
+pip install .
 ```
 
 To run the exporter as a `systemd` job, feel free to use the following template:
