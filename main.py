@@ -1,6 +1,7 @@
 from subprocess import check_output, CalledProcessError
 import json
-import time
+import signal
+import threading
 import logging
 from prometheus_client import start_http_server, Gauge, REGISTRY, PROCESS_COLLECTOR, PLATFORM_COLLECTOR
 
@@ -83,11 +84,15 @@ def getGPUMetrics():
     return metrics
 
 
-if __name__ == '__main__':
+def main():
+    shutdown = threading.Event()
+    signal.signal(signal.SIGTERM, lambda s, f: shutdown.set())
+    signal.signal(signal.SIGINT, lambda s, f: shutdown.set())
+
     start_http_server(9393)
     logger.info("[X] Started http server on port 9393..")
 
-    while True:
+    while not shutdown.is_set():
         metrics = getGPUMetrics()
         for card in metrics:
             if card == "system":
@@ -127,4 +132,10 @@ if __name__ == '__main__':
             gpuVRAMTotalBytes.labels(**labels).set(floatOrZero(c.get('VRAM Total Memory (B)')))
 
         logger.info("[X] Refreshed GPU metrics.")
-        time.sleep(10)
+        shutdown.wait(10)
+
+    logger.info("[X] Shutting down.")
+
+
+if __name__ == '__main__':
+    main()
