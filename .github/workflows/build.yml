@@ -1,8 +1,9 @@
 name: build
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+      - 'v*'
 
 env:
   REGISTRY: ghcr.io
@@ -27,12 +28,7 @@ jobs:
 
       - name: Resolve tag ref
         id: tag
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "value=${{ inputs.tag }}" >> $GITHUB_OUTPUT
-          else
-            echo "value=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          fi
+        run: echo "value=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
       - name: Extract metadata
         id: meta
