@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.3.0...v2.3.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* handle SIGTERM/SIGINT for graceful shutdown ([1dc79d5](https://github.com/raykrueger/rocm-smi-exporter/commit/1dc79d5a2a2919f4b2ea2054729602d3a4dfc260))
+
 ## [2.3.0](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.2.2...v2.3.0) (2026-05-10)
 
 
