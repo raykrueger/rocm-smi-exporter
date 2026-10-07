@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.5.0...v2.5.1) (2026-10-07)
+
+
+### Bug Fixes
+
+* add card and pci_bus labels so identical GPUs don't collide ([b7917d1](https://github.com/raykrueger/rocm-smi-exporter/commit/b7917d1e93d7adc5d52255d1d04a1c3eedba4ab5))
+
 ## [2.5.0](https://github.com/raykrueger/rocm-smi-exporter/compare/v2.4.2...v2.5.0) (2026-05-11)
 
 
