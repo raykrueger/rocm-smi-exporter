@@ -34,9 +34,14 @@ This exporter piggybacks on `rocm-smi` and exports the following metrics as Prom
 | `rocm_smi_vram_total_bytes` | VRAM total capacity | bytes |
 
 All gauges carry the following labels:
+- `card` — rocm-smi's card key (e.g. `card0`)
+- `pci_bus` — PCI address, lowercase (e.g. `0000:03:00.0`); stable across reboots
 - `device_id`
 - `device_name`
 - `subsystem_id`
+
+`card` and `pci_bus` keep identical GPUs apart: two cards of the same model can
+report the same device and subsystem ID.
 
 ## Docker
 

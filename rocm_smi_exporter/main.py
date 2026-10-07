@@ -24,7 +24,9 @@ DEVICE_NAME_FALLBACKS = {
 
 GENERIC_NAMES = {'N/A', 'AMD Radeon Graphics'}
 
-LABELS = ['device_name', 'device_id', 'subsystem_id']
+# card and pci_bus tell apart identical cards (same device and subsystem ID);
+# without them their series collide and the last card overwrites the rest.
+LABELS = ['card', 'pci_bus', 'device_name', 'device_id', 'subsystem_id']
 
 def resolveDeviceName(card):
     name = card.get('Device Name', 'N/A')
@@ -93,6 +95,8 @@ def setMetrics(metrics):
         c = metrics[card]
         device_name = resolveDeviceName(c)
         labels = {
+            'card': card,
+            'pci_bus': c.get('PCI Bus', 'N/A').lower(),
             'device_name': device_name,
             'device_id': c['Device ID'],
             'subsystem_id': c['Subsystem ID'],

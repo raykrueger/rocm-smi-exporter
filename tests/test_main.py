@@ -126,11 +126,11 @@ class TestGetGPUMetrics:
         mock_safe.side_effect = [all_data, vram_data]
         result = main.getGPUMetrics()
 
-        assert "node[0]" in result
-        assert "node[1]" in result
-        assert result["node[0]"]["VRAM Total Used Memory (B)"] == "21216985088"
-        assert result["node[1]"]["VRAM Total Used Memory (B)"] == "22884802560"
-        assert result["node[0]"]["Temperature (Sensor edge) (C)"] == "33"
+        assert "card0" in result
+        assert "card1" in result
+        assert result["card0"]["VRAM Total Used Memory (B)"] == "21216985088"
+        assert result["card1"]["VRAM Total Used Memory (B)"] == "22884802560"
+        assert result["card0"]["Temperature (Sensor edge) (C)"] == "33"
 
     @patch("rocm_smi_exporter.main.safeJsonOutput")
     def test_success_without_vram(self, mock_safe):
@@ -139,8 +139,8 @@ class TestGetGPUMetrics:
         mock_safe.side_effect = [all_data, None]
         result = main.getGPUMetrics()
 
-        assert "node[0]" in result
-        assert "VRAM Total Used Memory (B)" not in result["node[0]"]
+        assert "card0" in result
+        assert "VRAM Total Used Memory (B)" not in result["card0"]
 
     @patch("rocm_smi_exporter.main.safeJsonOutput")
     def test_rocm_smi_failure(self, mock_safe):
@@ -172,11 +172,15 @@ class TestSetMetrics:
         main.setMetrics(all_data)
 
         labels0 = {
+            "card": "card0",
+            "pci_bus": "0000:03:00.0",
             "device_name": "AMD Radeon AI PRO R9700",
             "device_id": "0x7551",
             "subsystem_id": "-0x1b67",
         }
         labels1 = {
+            "card": "card1",
+            "pci_bus": "0000:f3:00.0",
             "device_name": "AMD Radeon AI PRO R9700",
             "device_id": "0x7551",
             "subsystem_id": "-0x67ff",
@@ -226,6 +230,30 @@ class TestSetMetrics:
         assert get_metric_value("rocm_smi_vram_total_bytes", labels0) == 34208743424.0
         assert get_metric_value("rocm_smi_vram_total_bytes", labels1) == 34208743424.0
 
+    def test_identical_cards_get_separate_series(self):
+        # Two R9700s can report the same device and subsystem ID (seen on a
+        # live host); card and pci_bus keep their series apart.
+        card = {
+            "Device Name": "AMD Radeon Graphics",
+            "Device ID": "0x7551",
+            "Subsystem ID": "-0x67ff",
+        }
+        metrics = {
+            "card0": {**card, "PCI Bus": "0000:03:00.0", "Temperature (Sensor edge) (C)": "61"},
+            "card1": {**card, "PCI Bus": "0000:F3:00.0", "Temperature (Sensor edge) (C)": "64"},
+        }
+        main.setMetrics(metrics)
+
+        common = {
+            "device_name": "AMD Radeon AI PRO R9700",
+            "device_id": "0x7551",
+            "subsystem_id": "-0x67ff",
+        }
+        assert get_metric_value("rocm_smi_edge_temperature",
+                                {"card": "card0", "pci_bus": "0000:03:00.0", **common}) == 61.0
+        assert get_metric_value("rocm_smi_edge_temperature",
+                                {"card": "card1", "pci_bus": "0000:f3:00.0", **common}) == 64.0
+
     def test_skips_system_key(self):
         metrics = {"system": {"Device Name": "foo", "Device ID": "0x0000", "Subsystem ID": "-0x0000"}}
         main.setMetrics(metrics)
@@ -242,6 +270,8 @@ class TestSetMetrics:
         main.setMetrics(metrics)
 
         labels = {
+            "card": "card0",
+            "pci_bus": "0000:03:00.0",
             "device_name": "AMD Radeon AI PRO R9700",
             "device_id": "0x7551",
             "subsystem_id": "-0x1b67",
@@ -251,7 +281,7 @@ class TestSetMetrics:
 
     def test_missing_fields_default_to_zero(self):
         metrics = {
-            "node[0]": {
+            "card0": {
                 "Device Name": "Test GPU",
                 "Device ID": "0xbeef",
                 "Subsystem ID": "-0xbeef",
@@ -260,6 +290,8 @@ class TestSetMetrics:
         main.setMetrics(metrics)
 
         labels = {
+            "card": "card0",
+            "pci_bus": "n/a",
             "device_name": "Test GPU",
             "device_id": "0xbeef",
             "subsystem_id": "-0xbeef",
@@ -271,7 +303,7 @@ class TestSetMetrics:
 
     def test_na_values_default_to_zero(self):
         metrics = {
-            "node[0]": {
+            "card0": {
                 "Device Name": "Test GPU",
                 "Device ID": "0xface",
                 "Subsystem ID": "-0xface",
@@ -283,6 +315,8 @@ class TestSetMetrics:
         main.setMetrics(metrics)
 
         labels = {
+            "card": "card0",
+            "pci_bus": "n/a",
             "device_name": "Test GPU",
             "device_id": "0xface",
             "subsystem_id": "-0xface",
@@ -293,7 +327,7 @@ class TestSetMetrics:
 
     def test_power_fallback_fields(self):
         metrics = {
-            "node[0]": {
+            "card0": {
                 "Device Name": "Test GPU",
                 "Device ID": "0xfall",
                 "Subsystem ID": "-0xfall",
@@ -303,6 +337,8 @@ class TestSetMetrics:
         main.setMetrics(metrics)
 
         labels = {
+            "card": "card0",
+            "pci_bus": "n/a",
             "device_name": "Test GPU",
             "device_id": "0xfall",
             "subsystem_id": "-0xfall",
@@ -311,7 +347,7 @@ class TestSetMetrics:
 
     def test_power_fallback_second_field(self):
         metrics = {
-            "node[0]": {
+            "card0": {
                 "Device Name": "Test GPU",
                 "Device ID": "0xfall",
                 "Subsystem ID": "-0xfall",
@@ -321,6 +357,8 @@ class TestSetMetrics:
         main.setMetrics(metrics)
 
         labels = {
+            "card": "card0",
+            "pci_bus": "n/a",
             "device_name": "Test GPU",
             "device_id": "0xfall",
             "subsystem_id": "-0xfall",

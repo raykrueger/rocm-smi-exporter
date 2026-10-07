@@ -108,6 +108,8 @@ class TestDockerIntegration:
     def test_device_labels_correct(self):
         output = fetch_metrics()
         labels = {
+            "card": "card0",
+            "pci_bus": "0000:03:00.0",
             "device_id": "0x7551",
             "device_name": "AMD Radeon AI PRO R9700",
             "subsystem_id": "-0x1b67",
@@ -139,6 +141,8 @@ class TestDockerIntegration:
     def test_vram_bytes_correct(self):
         output = fetch_metrics()
         labels = {
+            "card": "card0",
+            "pci_bus": "0000:03:00.0",
             "device_id": "0x7551",
             "device_name": "AMD Radeon AI PRO R9700",
             "subsystem_id": "-0x1b67",
